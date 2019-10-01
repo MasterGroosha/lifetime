@@ -1,0 +1,87 @@
+﻿<html>
+<title>Life Time </title>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="style.css">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="paper-full.js"></script>
+<script type="text/javascript" src="raphael.js"></script> 
+</head>
+<body>
+
+<div id="wrapper">
+    <img src="background.jpg">
+    <div id="canvas">  
+    </div>
+</div>
+<div id="menu">
+Введите дату Вашего рождения: <input type="text" id="start_date" placeholder="Формат: дд.мм.гггг"> 
+<input type="button" id="btn_test" value="Расчитать!"><br>
+</div>
+
+<canvas id='canvas' width="0" height="0">1</canvas>
+<script type="text/javascript">
+
+var _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+// a and b are javascript Date objects
+function dateDiffInDays(a, b) {
+  // Discard the time and time-zone information.
+  //alert (a + "          " + b);
+  var azaz = Date.UTC(a.getFullYear);
+  alert(azaz);
+  var utc1 = Date.UTC(a.getFullYear(),
+  a.getMonth(),
+  a.getDate());
+  var utc2 = Date.UTC(b.getFullYear(),
+  b.getMonth(),
+  b.getDate());
+
+  return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+}
+
+$('#btn_test').click(function () {
+	var ONE_DAY = 1000 * 60 * 60 * 24
+	var today = new Date();
+	var kDay = $('#start_date').val().substring(0,2);
+	var kMonth = $('#start_date').val().substring(3,5);
+	if (kMonth == "10") {
+	kMonth = 9 } else { 
+	if (kMonth.substring(0,1) == "0") kMonth = kMonth.substring(1,2)
+	};
+	kMonth = kMonth - 1;
+	//if (kMonth.substring(0,1) == "0") kMonth = kMonth.substring(1,2);
+	var kYear = $('#start_date').val().substring(6);
+	var kDate = new Date(kYear, kMonth, kDay);
+//	alert (kYear + "  " + kMonth + "   " + kDay);
+	var date_start_ms = kDate.getTime();
+	var date_today_ms = today.getTime();
+	var difference_ms = Math.abs(date_today_ms - date_start_ms);
+	var diff_in_days = Math.round(difference_ms / ONE_DAY) - 1;
+	var num_weeks_all = Math.floor(diff_in_days / 7);
+	var num_weeks_row = Math.floor(num_weeks_all / (365.25 / 7));
+	var extra_weeks = num_weeks_all % (365.25 / 7);
+//	alert("Years: " + num_weeks_row + ", extra weeks: " + extra_weeks + ", Overall days: " + diff_in_days);
+	
+	var collection = [];
+	var paper = Raphael(10, 50, 1204, 1904);
+	for (var i = 0; i < 52; i++){
+		collection[i] = new Array(num_weeks_row);
+		for (var j = 0; j < num_weeks_row; j++){
+			collection[i][j] = paper.rect (116+(20*i), 187+(18*j), 10, 10);
+			collection[i][j].attr("fill","#f00");
+		}
+	}
+	if (extra_weeks != 0)
+		collection_extra = [];
+		for (var ex = 0; ex < extra_weeks; ex++) {
+		collection[ex] = paper.rect(116+(20*ex), 187+(18*(num_weeks_row)), 10, 10);
+		collection[ex].attr("fill","#f00");
+		}
+});
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+#menu {
+position: relative;
+padding: 0;
+}
+
+#wrapper {
+    position: absolute;
+    padding: 100, 100, 100 , 100;
+}
+#wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
